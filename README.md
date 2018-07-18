@@ -1,4 +1,4 @@
-# PHAN_style_change
+# PAN2018: PHAN Style Change Detection
 A Parallel Hierarchical Attention Network for Style Change Detection
 
 Authors : **Marjan Hosseinia** and **Arjun Mukherjee**
