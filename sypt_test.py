@@ -402,4 +402,4 @@ if __name__ == "__main__":
         print(f'file {tst_pt} already exists!')
 
     # load the trained model and evaluate on test dataset
-    #load_model(train_pt, tst_pt, '', pt_path)
+    load_model(train_pt, tst_pt, '', pt_path)

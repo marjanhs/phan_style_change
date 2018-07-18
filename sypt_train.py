@@ -439,5 +439,5 @@ if __name__ == "__main__":
         create_pt_pan2018(val_csv, val, root='', server_type=server)
 
     # train the model
-    #train_model(train, val, model_name)
+    train_model(train, val, model_name)
 
