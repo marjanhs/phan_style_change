@@ -42,7 +42,19 @@ Run the server:
 `java -mx4g -cp "*" edu.stanford.nlp.pipeline.StanfordCoreNLPServer -port 9000 -timeout 15000`
 
 ### train:
-`sypt_train.py`
+`sypt_train.py -c csv_files_path -o ptf_files_path`  
+
+csv_file_path: path to the csv train and validation files
+
+ptf_files_path: path to ptf_train and ptf_validation files
+
+e.g. (`sypt_train.py -c data/ -o data/`)
 
 ### test:
-`sypt_test.py`
+`sypt_test.py -c csv_files_path -o ptf_files_path`
+
+csv_file_path: path to the csv test file
+
+e.g. (`sypt_test.py -c data/ -o data/`)
+
+ptf_files_path: path to ptf_train and ptf_test files and the json output file 
