@@ -24,7 +24,7 @@ and stays at the second rank.
 [pycorenlp](https://github.com/smilli/py-corenlp)
 
 ### Dataset:
-[PAN Style Change Detection 2018](https://pan.webis.de/clef18/pan18-web/author-identification.html).
+[PAN 2018 Style Change Detection](https://pan.webis.de/clef18/pan18-web/author-identification.html).
 The csv files of the dataset can be found in data folder.
 
 ### Stanford CoreNLP:
