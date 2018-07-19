@@ -1,5 +1,5 @@
-# PHAN_style_change
-A Parallel Hierarchical Attention Network for Style Change Detection
+# PAN2018: PHAN Style Change Detection
+**A Parallel Hierarchical Attention Network for Style Change Detection**
 
 Authors : **Marjan Hosseinia** and **Arjun Mukherjee**
 
@@ -24,7 +24,7 @@ and stays at the second rank.
 [pycorenlp](https://github.com/smilli/py-corenlp)
 
 ### Dataset:
-[PAN Style Change Detection 2018](https://pan.webis.de/clef18/pan18-web/author-identification.html).
+[PAN 2018 Style Change Detection](https://pan.webis.de/clef18/pan18-web/author-identification.html).
 The csv files of the dataset can be found in data folder.
 
 ### Stanford CoreNLP:
@@ -38,10 +38,26 @@ Unzip the file:
 Run the server:
 
 `cd stanford-corenlp-full-2018-02-27`
+
 `java -mx4g -cp "*" edu.stanford.nlp.pipeline.StanfordCoreNLPServer -port 9000 -timeout 15000`
 
 ### train:
-`sypt_train.py`
+`sypt_train.py -c csv_files_path -o ptf_files_path`  
+
+csv_file_path: path to the csv train and validation files
+
+ptf_files_path: path to ptf_train and ptf_validation files
+
+e.g. `sypt_train.py -c data/ -o data/`
 
 ### test:
-`sypt_test.py`
+`sypt_test.py -c csv_files_path -o ptf_files_path`
+
+csv_file_path: path to the csv test file
+
+ptf_files_path: path to ptf_train and ptf_test files and the json output file 
+
+e.g. `sypt_test.py -c data/ -o data/`
+
+
+The attention implementation has been inspired from [this code.](https://github.com/EdGENetworks/attention-networks-for-classification)
