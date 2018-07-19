@@ -35,7 +35,7 @@ class PTFAttenPRNN(nn.Module):
                    Variable(torch.zeros(1, self.batch_size, self.ptf_hidden_size))
 
     def init_ptf_contx_vector(self):
-        return nn.Parameter(torch.Tensor(self.ptf_hidden_size, 1))
+        return nn.Parameter(torch.Tensor(self.ptf_hidden_size, 1).uniform_(-0.1, 0.1))  # changed
 
     def get_ptf_attention(self, ptf_encoded):
         u = F.tanh(self.lin_attention(ptf_encoded))
@@ -45,8 +45,8 @@ class PTFAttenPRNN(nn.Module):
         return alpha * ptf_encoded
 
     def forward(self,  ptf_sequence, ptf_hidden_state):
-        embeded_words = self.ptf_embed(ptf_sequence).view(len(ptf_sequence), self.batch_size, -1)
-        ptf_output, ptf_hidden_state = self.lstm(embeded_words, ptf_hidden_state)
+        embeded_ptfs = self.ptf_embed(ptf_sequence).view(len(ptf_sequence), self.batch_size, -1)
+        (ptf_output, ptf_hidden_state) = self.lstm(embeded_ptfs, ptf_hidden_state)
         ptf_attention = self.get_ptf_attention(ptf_output)
         s_i = torch.sum(ptf_attention, dim=0).unsqueeze(0)
         return s_i, ptf_hidden_state
@@ -77,17 +77,17 @@ class PTSentAttenRNN(nn.Module):
         ptf_atten_seq_l, ptf_atten_seq_r = ptf_atten_sequence[0], ptf_atten_sequence[1]
         sent_hidden_state_l, sent_hidden_state_r = sent_hidden_state[0], sent_hidden_state[1]
 
-        sent_output_l, sent_hidden_state_l = self.sent_lstm_l(ptf_atten_seq_l, sent_hidden_state_l)
+        (sent_output_l, sent_hidden_state_l) = self.sent_lstm_l(ptf_atten_seq_l, sent_hidden_state_l)
         sent_attention_l = self.get_sent_attention_l(sent_output_l)
         l_hidden = torch.sum(sent_attention_l, dim=0)
 
-        sent_output_r, sent_hidden_state_r = self.sent_lstm_r(ptf_atten_seq_r, sent_hidden_state_r)
+        (sent_output_r, sent_hidden_state_r) = self.sent_lstm_r(ptf_atten_seq_r, sent_hidden_state_r)
         sent_attention_r = self.get_sent_attention_r(sent_output_r)
         r_hidden = torch.sum(sent_attention_r, dim=0)
         
         sent_hidden_state = [sent_hidden_state_l, sent_hidden_state_r]
         merged = PTSentAttenRNN.get_last_layer(l_hidden, r_hidden, self.fuse)
-        merged = F.dropout(merged, p=self.drop_rate, training= self.training)
+        merged = F.dropout(merged, p=self.drop_rate, training=self.training)
         merged = self.lin(merged)
         return F.log_softmax(merged, dim=1), sent_hidden_state
 
@@ -106,7 +106,7 @@ class PTSentAttenRNN(nn.Module):
         return alpha * sent_encoded
 
     def init_sent_contx_vector(self):
-        return nn.Parameter(torch.Tensor(self.sent_hidden_size, 1))
+        return nn.Parameter(torch.Tensor(self.sent_hidden_size, 1).uniform_(-0.1, 0.1)) ## changed
     @staticmethod
     def get_last_layer(l_hidden, r_hidden, fuse=True):
         if fuse:
@@ -167,6 +167,11 @@ def train_data(x_train, y_target, ptf_attn_model, sent_attn_model, ptf_optimizer
     y_pred, state_sent = sent_attn_model([s_l, s_r], state_sent)
     loss_train = criterion(y_pred.cuda(), y_target.cuda())
     loss_train.backward()
+
+    # `clip_grad_norm_` helps prevent the exploding gradient problem in LSTMs
+    torch.nn.utils.clip_grad_norm_(ptf_attn_model_l.parameters(), 0.25)
+    torch.nn.utils.clip_grad_norm_(ptf_attn_model_r.parameters(), 0.25)
+    torch.nn.utils.clip_grad_norm_(sent_attn_model.parameters(), 0.25)
 
     ptf_optimizer_l.step()
     ptf_optimizer_r.step()
