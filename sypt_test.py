@@ -33,7 +33,7 @@ class PTFAttenPRNN(nn.Module):
                    Variable(torch.zeros(1, self.batch_size, self.ptf_hidden_size))
 
     def init_ptf_contx_vector(self):
-        return nn.Parameter(torch.Tensor(self.ptf_hidden_size, 1))
+        return nn.Parameter(torch.Tensor(self.ptf_hidden_size, 1).uniform_(-1.0, 1.0))
 
     def get_ptf_attention(self, ptf_encoded):
         u = F.tanh(self.lin_attention(ptf_encoded))
@@ -104,7 +104,7 @@ class PTSentAttenRNN(nn.Module):
         return alpha * sent_encoded
 
     def init_sent_contx_vector(self):
-        return nn.Parameter(torch.Tensor(self.sent_hidden_size, 1))
+        return nn.Parameter(torch.Tensor(self.sent_hidden_size, 1).uniform_(-1.0, 1.0))
 
     @staticmethod
     def get_last_layer(l_hidden, r_hidden, fuse=True):
