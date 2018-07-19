@@ -310,7 +310,7 @@ def get_params():
     params["EMBEDDING_DIM"] = 100
     params["ptf_HIDDEN_DIM"] = 8
     params["SENT_HIDDEN_DIM"] = 8
-    params["EPOCHS"] = 1
+    params["EPOCHS"] = 30
     params["dropout_rate"] = 0.3
     params["CLASS_NO"] = 2
     params["fuse"] = True
