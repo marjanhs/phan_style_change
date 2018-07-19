@@ -59,3 +59,4 @@ ptf_files_path: path to ptf_train and ptf_test files and the json output file
 
 e.g. `sypt_test.py -c data/ -o data/`
 
+The attention implementation has been inspired from [this code.](https://github.com/EdGENetworks/attention-networks-for-classification)
