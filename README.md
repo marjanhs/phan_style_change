@@ -1,6 +1,6 @@
-# [PAN2018: A Parallel Hierarchical Attention Network for Style Change Detection](http://ceur-ws.org/Vol-2125/paper_91.pdf)
+# PAN2018: A Parallel Hierarchical Attention Network for Style Change Detection
 
-Authors : **Marjan Hosseinia** and **Arjun Mukherjee**
+Authors : **Marjan Hosseinia** and **Arjun Mukherjee** [\[pdf\]](http://ceur-ws.org/Vol-2125/paper_91.pdf)
 
 We propose a model for the new problem of style change detection.
 Given a document, we verify if it contains at least one style change. In other
